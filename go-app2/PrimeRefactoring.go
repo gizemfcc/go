@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
@@ -28,7 +29,7 @@ func isPrimeNum(num int) bool {
 		}
 	}
 
-	if *isPrime == true {
+	if *isPrime {
 		return true
 	} else {
 		return false
@@ -41,12 +42,18 @@ func getFileName() string {
 	return fileName
 }
 
-func readFileInArray(fileName string) []int {
+func readFile(fileName string) []byte {
 	content, err := os.ReadFile(fileName)
 
 	if err != nil {
 		log.Fatal(err)
 	}
+	return content
+
+}
+
+func readFileInArray(fileName string) []int {
+	var content []byte = readFile(fileName)
 	fileLines := lineBreakRegExp.Split(string(content), -1)
 	var Nums []int
 	for _, line := range fileLines {
@@ -59,15 +66,18 @@ func readFileInArray(fileName string) []int {
 	return Nums
 }
 
+func Shuffle(array []int) {
+	rand.Shuffle(len(array), func(i, j int) {
+		array[i], array[j] = array[j], array[i]
+	})
+}
+
 func main() {
 	var fileName = getFileName()
 	var Nums []int = readFileInArray(fileName)
+	Shuffle(Nums)
 	for _, num := range Nums {
-
-		var isPrime *bool
-		isPrime = new(bool)
-		*isPrime = isPrimeNum(num)
-		if *isPrime == true {
+		if isPrimeNum(num) {
 			fmt.Println(num, " is prime")
 		} else {
 			fmt.Println(num, " is not prime")

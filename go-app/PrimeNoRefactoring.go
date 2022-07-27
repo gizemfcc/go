@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"log"
 	"math"
+	"math/rand"
 	"os"
 	"regexp"
 	"strconv"
@@ -33,6 +34,9 @@ func main() {
 		}
 		Nums = append(Nums, intVar)
 	}
+	rand.Shuffle(len(Nums), func(i, j int) {
+		Nums[i], Nums[j] = Nums[j], Nums[i]
+	})
 	for _, num := range Nums {
 		if num < 2 {
 			fmt.Println("Number must be greater than 2.")
@@ -47,7 +51,6 @@ func main() {
 				break
 			}
 		}
-
 		if *isPrime == true {
 			fmt.Println(num, " is prime")
 		} else {

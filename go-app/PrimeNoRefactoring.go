@@ -1,6 +1,7 @@
 package main
 
 import (
+	"errors"
 	"fmt"
 	"log"
 	"math"
@@ -18,9 +19,15 @@ func main() {
 	fmt.Println("Enter the file name: ")
 	var fileName string
 	fmt.Scanln(&fileName)
+	_, err := os.Stat(fileName)
+	if errors.Is(err, os.ErrNotExist) {
+		fmt.Println("file does not exist")
+	} else {
+
+		fmt.Println("file exists")
+	}
 
 	content, err := os.ReadFile(fileName)
-
 	if err != nil {
 		log.Fatal(err)
 	}
